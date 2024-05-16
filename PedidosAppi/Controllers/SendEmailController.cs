@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PedidosAppi.Interfaces;
 
 namespace PedidosAppi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class SendEmailController : ControllerBase
     {
@@ -12,23 +12,25 @@ namespace PedidosAppi.Controllers
 
         private readonly IConfiguration _config;
 
-        public SendEmailController (ISendEmailService sendEmailService, IConfiguration config)
+        public SendEmailController(ISendEmailService sendEmailService, IConfiguration config)
         {
             _sendEmailService = sendEmailService;
             _config = config;
         }
 
-        public async Task<IActionResult> SendEmailRecover([FromForm] string emailTo, [FromForm] string emailBody, [FromForm] string codRecuperacion)
+        [HttpPost]
+        [Route("SendEmailRecover")]
+        public async Task<IActionResult> SendEmailRecover([FromForm] string emailTo, [FromForm] string codRecuperacion)
         {
-           string emailPass = _config["PasswordMail"];
-           string emailFrom = _config["UserNameMail"];
+            string emailPass = _config["PasswordMail"];
+            string emailFrom = _config["UserNameMail"];
 
-           try
+            try
             {
-                await _sendEmailService.SendEmailRecover(emailFrom, emailTo, emailBody, emailPass, codRecuperacion);
+                await _sendEmailService.SendEmailRecover(emailFrom, emailTo, emailPass, codRecuperacion);
                 return Ok("Se envio el mail correspondiente");
             }
-           
+
             catch (Exception ex)
             {
                 return BadRequest($"Error: {ex.Message}");

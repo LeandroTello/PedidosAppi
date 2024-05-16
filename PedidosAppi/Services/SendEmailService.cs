@@ -7,7 +7,7 @@ namespace PedidosAppi.Services
 {
     public class SendEmailService : ISendEmailService
     {
-        public async Task SendEmailRecover(string emailFrom, string emailTo, string emailBody, string emailPass, string codRecuperacion)
+        public async Task SendEmailRecover(string emailFrom, string emailTo, string emailPass, string codRecuperacion)
         {
             string servidor = "smtp-mail.outlook.com";
             int puerto = 587;
@@ -21,7 +21,8 @@ namespace PedidosAppi.Services
                 emailMensaje.To.Add(new MailboxAddress("Usuario", emailTo));
 
                 var bodyBuilder = new BodyBuilder();
-                bodyBuilder.HtmlBody = $"Su código de recuperación es: {codRecuperacion}<br>Por favor ingresar a este <a href='https://localhost:7006/Access/RecoverUser'>link</a> para recuperar su usuario.";
+                bodyBuilder.HtmlBody = $"Su código de recuperación es: {codRecuperacion}<br>" +
+                    $"Por favor ingresar a este <a href='https://localhost:7006/Access/RecoverUser'>link</a> para recuperar su usuario.";
 
                 emailMensaje.Body = bodyBuilder.ToMessageBody();
 
@@ -43,8 +44,6 @@ namespace PedidosAppi.Services
             {
                 throw new Exception($"Error: {ex.Message}");
             }
-
-            throw new NotImplementedException();
         }
     }
 }
