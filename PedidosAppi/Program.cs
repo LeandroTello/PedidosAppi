@@ -1,7 +1,15 @@
+using PedidosAppi.Data;
 using PedidosAppi.Interfaces;
 using PedidosAppi.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddDbContext<PedidosAppiContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PedidosAppiContext") 
+    ?? throw new InvalidOperationException("Connection string 'PedidosAppiContext' not found.")));
 
 // Add services to the container.
 
@@ -27,6 +35,8 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod();
     });
 });
+
+//builder.WebHost.UseUrls("https://localhost:7273");
 
 var app = builder.Build();
 

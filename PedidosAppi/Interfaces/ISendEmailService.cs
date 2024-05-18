@@ -2,6 +2,8 @@
 {
     public interface ISendEmailService
     {
-        Task SendEmailRecover(string emailFrom, string emailTo, string emailPass, string codRecuperacion);
+        Task SendEmailRecover(string emailFrom, string emailPass, string emailTo, string usuario);
+
+        string GenerateRecoveryCode();
     }
 }

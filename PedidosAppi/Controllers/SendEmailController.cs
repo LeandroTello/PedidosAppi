@@ -20,14 +20,14 @@ namespace PedidosAppi.Controllers
 
         [HttpPost]
         [Route("SendEmailRecover")]
-        public async Task<IActionResult> SendEmailRecover([FromForm] string emailTo, [FromForm] string codRecuperacion)
+        public async Task<IActionResult> SendEmailRecover([FromForm] string emailTo, [FromForm] string usuario)
         {
             string emailPass = _config["PasswordMail"];
             string emailFrom = _config["UserNameMail"];
 
             try
             {
-                await _sendEmailService.SendEmailRecover(emailFrom, emailTo, emailPass, codRecuperacion);
+                await _sendEmailService.SendEmailRecover(emailFrom, emailPass, emailTo, usuario);
                 return Ok("Se envio el mail correspondiente");
             }
 
