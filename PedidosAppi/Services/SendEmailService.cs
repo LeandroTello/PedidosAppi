@@ -96,5 +96,27 @@ namespace PedidosAppi.Services
                 }
             }
         }
+
+        public async Task<bool> ValidateUser(string user, string recoveryCode)
+        {
+            bool userValidate = false;
+
+            var userEntity = await _context.CodigosRecuperacion
+                .Where(cr => cr.Usuario == user
+                    && cr.CodRecuperacion == recoveryCode
+                    && cr.FechaExpiracion >= DateTime.Now)
+                .FirstOrDefaultAsync();
+
+            if(userEntity != null)
+            {
+                if (userEntity.CodRecuperacion.Equals(recoveryCode, StringComparison.Ordinal)){
+
+                    userValidate = true;
+                }
+            }
+
+            return userValidate;
+        }
+
     }
 }

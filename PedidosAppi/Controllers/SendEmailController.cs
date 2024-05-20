@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PedidosAppi.Interfaces;
+using Newtonsoft.Json;
 
 namespace PedidosAppi.Controllers
 {
@@ -34,6 +35,28 @@ namespace PedidosAppi.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        [Route("ValidateUser")]
+        public async Task<IActionResult> ValidateUser([FromForm] string user, [FromForm] string recoveryCode)
+        {
+            try
+            {
+                if(await _sendEmailService.ValidateUser(user, recoveryCode)) 
+                {
+                    return Ok(new { success = true, message = "Usuario validado." });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Usuario invalido." });
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ex.Message });
             }
         }
     }
