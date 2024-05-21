@@ -8,6 +8,8 @@ namespace PedidosAppi.Data
 
         public DbSet<PedidosAppi.Models.CodigoRecuperacionModel> CodigosRecuperacion { get; set; }
 
+        public DbSet<PedidosAppi.Models.UsuarioModel> Usuarios { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

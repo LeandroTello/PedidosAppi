@@ -18,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ISendEmailService, SendEmailService>();
+builder.Services.AddScoped<IUserManagerService, UserManagerService>();
 
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
