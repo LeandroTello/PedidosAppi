@@ -23,13 +23,9 @@ namespace PedidosAppi.Services
                     && cr.FechaExpiracion >= DateTime.Now)
                 .FirstOrDefaultAsync();
 
-            if (userEntity != null)
+            if (userEntity != null && userEntity.CodRecuperacion.Equals(recoveryCode, StringComparison.Ordinal))
             {
-                if (userEntity.CodRecuperacion.Equals(recoveryCode, StringComparison.Ordinal))
-                {
-
-                    userValidate = true;
-                }
+                userValidate = true;
             }
 
             return userValidate;
@@ -40,13 +36,16 @@ namespace PedidosAppi.Services
             var userEntity = await _context.Usuarios
                 .Where(u => u.Usuario == user)
                 .FirstOrDefaultAsync();
+
+            if(userEntity is null)
+            {
+                throw new Exception($"Error: El usuario {user} no existe.");
+            }
+
             try
             {
-                if (userEntity != null)
-                {
-                    userEntity.Clave = BCrypt.Net.BCrypt.HashPassword(password);
-                    await _context.SaveChangesAsync();
-                }
+                userEntity.Clave = BCrypt.Net.BCrypt.HashPassword(password);
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {

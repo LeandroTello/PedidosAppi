@@ -29,7 +29,8 @@ namespace PedidosAppi.Controllers
             try
             {
                 await _sendEmailService.SendEmailRecover(emailFrom, emailPass, emailTo, usuario);
-                return Ok("Se envio el mail correspondiente");
+                //return Ok("Se envio el mail correspondiente");
+                return Ok( new { Success = true, message = "Se envio el mail correspondiente." });
             }
 
             catch (Exception ex)
